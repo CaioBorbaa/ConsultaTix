@@ -201,6 +201,41 @@ async function buscarTix() {
     }
 }
 
+// ===== DARK MODE =====
+function initTheme() {
+    const savedTheme = localStorage.getItem('tintomax-theme');
+    const body = document.body;
+    const icon = document.getElementById('themeIcon');
+
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+        if (icon) icon.className = 'fas fa-sun';
+    } else {
+        body.classList.remove('dark-mode');
+        if (icon) icon.className = 'fas fa-moon';
+    }
+}
+
+function toggleTheme() {
+    const body = document.body;
+    const icon = document.getElementById('themeIcon');
+    const isDark = body.classList.toggle('dark-mode');
+
+    if (isDark) {
+        icon.className = 'fas fa-sun';
+        localStorage.setItem('tintomax-theme', 'dark');
+    } else {
+        icon.className = 'fas fa-moon';
+        localStorage.setItem('tintomax-theme', 'light');
+    }
+}
+
+// Inicializar tema ao carregar
+document.addEventListener('DOMContentLoaded', initTheme);
+
+// Evento de clique no botão de tema
+document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
 // Permitir busca com Enter
 document.querySelectorAll('input').forEach(input => {
     input.addEventListener('keypress', function(e) {

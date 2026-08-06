@@ -14,6 +14,185 @@
     --sombra: 0 4px 6px -1px rgba(0, 61, 165, 0.1), 0 2px 4px -1px rgba(0, 61, 165, 0.06);
     --sombra-lg: 0 10px 25px -5px rgba(0, 61, 165, 0.15), 0 4px 6px -2px rgba(0, 61, 165, 0.08);
     --sombra-card: 0 20px 40px -10px rgba(242, 101, 34, 0.15), 0 8px 16px -4px rgba(0, 61, 165, 0.1);
+    --input-bg: #F7F8FC;
+    --header-bg: linear-gradient(135deg, #003DA5, #1A5FCF);
+    --card-bg: #FFFFFF;
+    --table-header-bg: linear-gradient(135deg, #003DA5, #1A5FCF);
+    --table-header-text: #FFFFFF;
+    --table-border: #E2E8F0;
+    --table-row-hover: #FFF3ED;
+    --footer-text: #A0AEC0;
+    --empty-icon-opacity: 0.7;
+    --group-header-bg: linear-gradient(135deg, #F8FAFC, #EDF2F7);
+    --toggle-bg: rgba(255,255,255,0.15);
+    --toggle-hover-bg: rgba(255,255,255,0.25);
+    --toggle-icon-color: #FFD700;
+}
+
+/* ===== DARK MODE ===== */
+.dark-mode {
+    --cinza-bg: #0F172A;
+    --cinza-texto: #CBD5E1;
+    --cinza-borda: #1E293B;
+    --branco: #1E293B;
+    --sombra: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --sombra-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+    --sombra-card: 0 20px 40px -10px rgba(0, 0, 0, 0.4), 0 8px 16px -4px rgba(0, 0, 0, 0.3);
+    --input-bg: #0F172A;
+    --header-bg: linear-gradient(135deg, #002A75, #003DA5);
+    --card-bg: #1E293B;
+    --table-header-bg: linear-gradient(135deg, #002A75, #003DA5);
+    --table-header-text: #FFFFFF;
+    --table-border: #334155;
+    --table-row-hover: #2D1B0E;
+    --footer-text: #64748B;
+    --empty-icon-opacity: 0.5;
+    --group-header-bg: linear-gradient(135deg, #1E293B, #0F172A);
+    --toggle-bg: rgba(255,255,255,0.1);
+    --toggle-hover-bg: rgba(255,255,255,0.2);
+    --toggle-icon-color: #FFD700;
+}
+
+.dark-mode .form-group input {
+    background: #0F172A;
+    color: #CBD5E1;
+    border-color: #334155;
+}
+
+.dark-mode .form-group input:focus {
+    background: #1E293B;
+}
+
+.dark-mode .form-group input::placeholder {
+    color: #64748B;
+}
+
+.dark-mode .form-group label {
+    color: #94A3B8;
+}
+
+.dark-mode .search-card-header h3 {
+    color: #E2E8F0;
+}
+
+.dark-mode .hero {
+    background: #1E293B;
+}
+
+.dark-mode .hero h1 {
+    color: #F1F5F9;
+}
+
+.dark-mode .hero p {
+    color: #94A3B8;
+}
+
+.dark-mode .tinta-group-header {
+    background: linear-gradient(135deg, #1E293B, #0F172A);
+}
+
+.dark-mode .tinta-group-title h4 {
+    color: #F1F5F9;
+}
+
+.dark-mode .tinta-group-title .tinta-subtitle {
+    color: #94A3B8;
+}
+
+.dark-mode .results-header h3 {
+    color: #E2E8F0;
+}
+
+.dark-mode .tinta-group {
+    background: #1E293B;
+    border-color: #334155;
+}
+
+.dark-mode .search-card {
+    background: #1E293B;
+    border-color: #334155;
+}
+
+.dark-mode .results-count {
+    background: #1E293B;
+    color: #93C5FD;
+}
+
+.dark-mode .cor-badge {
+    background: #1E293B;
+    color: #93C5FD;
+}
+
+.dark-mode .produto-badge {
+    background: #0F172A;
+    color: #CBD5E1;
+}
+
+.dark-mode .tix-badge {
+    background: #2D1B0E;
+    color: #F26522;
+}
+
+.dark-mode .embalagem-badge {
+    background: #0F172A;
+    color: #CBD5E1;
+}
+
+.dark-mode .qty-ml {
+    background: #1E293B;
+    color: #93C5FD;
+    border-color: #334155;
+}
+
+.dark-mode .qty-unitaria {
+    background: #0F2E2E;
+    color: #5EEAD4;
+    border-color: #145353;
+}
+
+.dark-mode .row-unitaria {
+    background-color: #0A1F1F;
+}
+
+.dark-mode .row-unitaria:hover {
+    background-color: #0F2E2E;
+}
+
+.dark-mode td {
+    color: #CBD5E1;
+    border-bottom-color: #334155;
+}
+
+.dark-mode .empty-state h4 {
+    color: #F1F5F9;
+}
+
+.dark-mode .empty-state p {
+    color: #64748B;
+}
+
+.dark-mode .error-state {
+    background: #2D1B0E;
+    border-color: #7F1D1D;
+}
+
+.dark-mode .error-state p {
+    color: #FCA5A5;
+}
+
+.dark-mode .base-a {
+    background: #0F2E2E;
+    color: #5EEAD4;
+}
+
+.dark-mode .base-b {
+    background: #2D2A0F;
+    color: #FDE047;
+}
+
+.dark-mode .base-c {
+    background: #2E1045;
+    color: #C084FC;
 }
 
 * {
@@ -27,16 +206,18 @@ body {
     background-color: var(--cinza-bg);
     color: var(--cinza-texto);
     min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ===== HEADER ===== */
 .header {
-    background: var(--azul-gradient);
+    background: var(--header-bg);
     padding: 0;
     position: sticky;
     top: 0;
     z-index: 100;
     box-shadow: 0 4px 12px rgba(0, 61, 165, 0.3);
+    transition: background 0.3s ease;
 }
 
 .header-inner {
@@ -84,12 +265,41 @@ body {
     letter-spacing: 0.5px;
 }
 
+/* ===== DARK MODE TOGGLE ===== */
+.theme-toggle {
+    background: var(--toggle-bg);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--toggle-icon-color);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    margin-left: 12px;
+}
+
+.theme-toggle:hover {
+    background: var(--toggle-hover-bg);
+    transform: scale(1.1);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 /* ===== HERO SECTION ===== */
 .hero {
     background: var(--branco);
     padding: 40px 24px 30px;
     text-align: center;
     border-bottom: 3px solid var(--laranja);
+    transition: background 0.3s ease;
 }
 
 .hero-inner {
@@ -119,6 +329,11 @@ body {
     font-size: 1.6rem;
     font-weight: 700;
     margin-bottom: 8px;
+    transition: color 0.3s ease;
+}
+
+.dark-mode .hero h1 {
+    color: #F1F5F9;
 }
 
 .hero p {
@@ -127,6 +342,7 @@ body {
     line-height: 1.6;
     max-width: 500px;
     margin: 0 auto;
+    transition: color 0.3s ease;
 }
 
 /* ===== MAIN CONTENT ===== */
@@ -138,12 +354,13 @@ body {
 
 /* ===== SEARCH CARD ===== */
 .search-card {
-    background: var(--branco);
+    background: var(--card-bg);
     border-radius: 16px;
     padding: 32px;
     box-shadow: var(--sombra-card);
     margin-bottom: 32px;
     border: 1px solid var(--cinza-borda);
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .search-card-header {
@@ -164,6 +381,7 @@ body {
     color: var(--azul-dark);
     font-size: 1.05rem;
     font-weight: 600;
+    transition: color 0.3s ease;
 }
 
 .form-grid {
@@ -187,6 +405,7 @@ body {
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.3px;
+    transition: color 0.3s ease;
 }
 
 .form-group label i {
@@ -203,7 +422,7 @@ body {
     font-size: 0.95rem;
     color: var(--cinza-texto);
     transition: all 0.3s ease;
-    background: var(--cinza-bg);
+    background: var(--input-bg);
 }
 
 .form-group input::placeholder {
@@ -213,7 +432,7 @@ body {
 .form-group input:focus {
     outline: none;
     border-color: var(--laranja);
-    background: var(--branco);
+    background: var(--card-bg);
     box-shadow: 0 0 0 3px rgba(242, 101, 34, 0.12);
 }
 
@@ -305,6 +524,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+    transition: color 0.3s ease;
 }
 
 .results-count {
@@ -314,20 +534,22 @@ body {
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 /* ===== TINTA GROUP (separação entre tintas) ===== */
 .tinta-group {
     margin-bottom: 28px;
-    background: var(--branco);
+    background: var(--card-bg);
     border-radius: 16px;
     box-shadow: var(--sombra);
     overflow: hidden;
     border: 1px solid var(--cinza-borda);
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .tinta-group-header {
-    background: linear-gradient(135deg, #F8FAFC, #EDF2F7);
+    background: var(--group-header-bg);
     padding: 16px 20px;
     display: flex;
     align-items: center;
@@ -335,6 +557,7 @@ body {
     border-bottom: 2px solid var(--laranja);
     flex-wrap: wrap;
     gap: 10px;
+    transition: background 0.3s ease;
 }
 
 .tinta-group-title {
@@ -362,12 +585,14 @@ body {
     color: var(--azul-dark);
     font-size: 1rem;
     font-weight: 600;
+    transition: color 0.3s ease;
 }
 
 .tinta-group-title .tinta-subtitle {
     color: var(--cinza-texto);
     font-size: 0.82rem;
     font-weight: 400;
+    transition: color 0.3s ease;
 }
 
 .tinta-group-meta {
@@ -386,6 +611,7 @@ body {
     font-size: 0.9rem;
     letter-spacing: 0.5px;
     border: 2px solid var(--laranja);
+    transition: all 0.3s ease;
 }
 
 .cor-badge {
@@ -395,6 +621,7 @@ body {
     border-radius: 8px;
     font-weight: 600;
     font-size: 0.82rem;
+    transition: all 0.3s ease;
 }
 
 .produto-badge {
@@ -404,6 +631,7 @@ body {
     border-radius: 8px;
     font-weight: 500;
     font-size: 0.82rem;
+    transition: all 0.3s ease;
 }
 
 .base-badge {
@@ -440,11 +668,11 @@ table {
 }
 
 thead {
-    background: var(--azul-gradient);
+    background: var(--table-header-bg);
 }
 
 th {
-    color: var(--branco);
+    color: var(--table-header-text);
     font-weight: 600;
     font-size: 0.78rem;
     text-transform: uppercase;
@@ -457,8 +685,9 @@ th {
 td {
     padding: 14px 16px;
     font-size: 0.88rem;
-    border-bottom: 1px solid var(--cinza-borda);
+    border-bottom: 1px solid var(--table-border);
     color: var(--cinza-texto);
+    transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 tbody tr {
@@ -466,7 +695,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-    background-color: var(--laranja-light);
+    background-color: var(--table-row-hover);
 }
 
 tbody tr:last-child td {
@@ -547,18 +776,20 @@ tbody tr:last-child td {
     font-size: 3rem;
     color: var(--laranja);
     margin-bottom: 16px;
-    opacity: 0.7;
+    opacity: var(--empty-icon-opacity);
 }
 
 .empty-state h4 {
     color: var(--azul-dark);
     font-size: 1.1rem;
     margin-bottom: 8px;
+    transition: color 0.3s ease;
 }
 
 .empty-state p {
     color: #A0AEC0;
     font-size: 0.9rem;
+    transition: color 0.3s ease;
 }
 
 /* ===== ERROR STATE ===== */
@@ -585,8 +816,9 @@ tbody tr:last-child td {
 .footer {
     text-align: center;
     padding: 24px;
-    color: #A0AEC0;
+    color: var(--footer-text);
     font-size: 0.8rem;
+    transition: color 0.3s ease;
 }
 
 .footer strong {
