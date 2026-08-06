@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta TIX - Tintomax</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-brand">
+                <img src="https://tintomax.com.br/imagens/logo-tintomax.png" alt="Tintomax Logo" onerror="this.style.display='none'">
+                <div>
+                    <div class="header-title">Consulta <span>TIX</span></div>
+                </div>
+            </div>
+            <div class="header-badge">
+                <i class="fas fa-search"></i> Sistema de Fórmulas
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-icon">
+                <i class="fas fa-flask"></i>
+            </div>
+            <h1>Consulta de Colorantes Personalizados</h1>
+            <p>Busque fórmulas de tintas personalizadas por estabelecimento, cliente ou nota fiscal. Encontre rapidamente as informações dos colorantes utilizados.</p>
+        </div>
+    </section>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- SEARCH CARD -->
+        <div class="search-card">
+            <div class="search-card-header">
+                <i class="fas fa-sliders-h"></i>
+                <h3>Filtros de Busca</h3>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="estab"><i class="fas fa-store"></i> Estabelecimento (Estab)</label>
+                    <input type="text" id="estab" placeholder="Ex: 01">
+                </div>
+                <div class="form-group">
+                    <label for="codigo_cliente"><i class="fas fa-user"></i> Código do Cliente</label>
+                    <input type="text" id="codigo_cliente" placeholder="Ex: 12345">
+                </div>
+                <div class="form-group">
+                    <label for="id_nota"><i class="fas fa-file-invoice"></i> ID da Nota</label>
+                    <input type="text" id="id_nota" placeholder="Ex: 98765">
+                </div>
+            </div>
+
+            <button class="btn-search" onclick="buscarTix()">
+                <i class="fas fa-search"></i>
+                Pesquisar TIX
+            </button>
+        </div>
+
+        <!-- LOADING -->
+        <div class="loading-container" id="loading">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Buscando dados no sistema...</p>
+            <p class="loading-subtext">Aguarde um momento</p>
+        </div>
+
+        <!-- RESULTS -->
+        <div class="results-container" id="resultado"></div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>&copy; 2026 <strong>Tintomax</strong> — Sistema de Consulta TIX</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
