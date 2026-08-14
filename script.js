@@ -1,16 +1,16 @@
 async function buscarTix() {
     const estab = document.getElementById('estab').value.trim();
-    const codigo_cliente = document.getElementById('codigo_cliente').value.trim();
     const id_nota = document.getElementById('id_nota').value.trim();
     const divResultado = document.getElementById('resultado');
     const loading = document.getElementById('loading');
 
-    if (!estab && !codigo_cliente && !id_nota) {
+    // Validação agora exige apenas Estabelecimento ou ID da Nota
+    if (!estab && !id_nota) {
         divResultado.innerHTML = `
             <div class="empty-state">
                 <i class="fas fa-exclamation-circle"></i>
                 <h4>Informe ao menos um campo</h4>
-                <p>Preencha o estabelecimento, código do cliente ou ID da nota para pesquisar.</p>
+                <p>Preencha o estabelecimento ou ID da nota para pesquisar.</p>
             </div>`;
         divResultado.classList.add('active');
         return;
@@ -18,7 +18,6 @@ async function buscarTix() {
 
     let urlParams = [];
     if (estab) urlParams.push(`estab=${encodeURIComponent(estab)}`);
-    if (codigo_cliente) urlParams.push(`codigo_cliente=${encodeURIComponent(codigo_cliente)}`);
     if (id_nota) urlParams.push(`id_nota=${encodeURIComponent(id_nota)}`);
 
     const webhookBaseUrl = 'https://n8n.tintomax.com.br/webhook/16937276-8a3e-4150-aa4c-f26299a772e1';
@@ -54,7 +53,6 @@ async function buscarTix() {
                 const idFormula = item.IDFORMULA || 'SEM_FORMULA';
                 const chave = idFormula;
 
-                // CORREÇÃO: Lendo as novas colunas exatas enviadas pelo n8n
                 const unidadeTinta = (item.UNIDADE_TINTA !== null && item.UNIDADE_TINTA !== undefined) ? item.UNIDADE_TINTA : '-';
                 const vlrML = (item.VLRML !== null && item.VLRML !== undefined) ? item.VLRML : '-';
                 
@@ -101,7 +99,6 @@ async function buscarTix() {
 
             let groupIndex = 0;
             grupos.forEach((grupo) => {
-                // Separador entre grupos
                 if (groupIndex > 0) {
                     html += `
                         <div class="tinta-separator">
@@ -111,7 +108,6 @@ async function buscarTix() {
                         </div>`;
                 }
 
-                // Badge da base
                 let baseHtml = grupo.base;
                 if (grupo.base && grupo.base.toUpperCase().includes('A')) {
                     baseHtml = `<span class="base-badge base-a">${grupo.base}</span>`;
@@ -154,17 +150,16 @@ async function buscarTix() {
                                 <tbody>`;
 
                 grupo.registros.forEach(reg => {
-                    // Badge para unidade de tinta 
+                    // Badge para Unidade (Agora puxa vlrML do banco)
                     const unidadeBadge = reg.vlrML !== '-' 
                         ? `<span class="qty-badge qty-unidade">${reg.vlrML} un</span>` 
                         : '<span style="color: #A0AEC0;">-</span>';
 
-                    // Badge para ML 
+                    // Badge para ML (Agora puxa unidadeTinta do banco)
                     const mlBadge = reg.unidadeTinta !== '-' 
                         ? `<span class="qty-badge qty-ml">${reg.unidadeTinta} ML</span>` 
                         : '<span style="color: #A0AEC0;">-</span>';
 
-                    // Formatação do Nome do corante
                     const coranteDisplay = reg.nomeCorante && reg.nomeCorante.trim() !== '' 
                         ? (reg.nomeCorante === '(Tinta Base)' ? `<strong>${reg.nomeCorante}</strong>` : reg.nomeCorante)
                         : '<em style="color: #A0AEC0; font-size: 0.8rem;">-</em>';
@@ -206,35 +201,3 @@ async function buscarTix() {
         divResultado.classList.add('active');
     }
 }
-
-// ===== DARK MODE =====
-document.addEventListener('DOMContentLoaded', function() {
-    const savedTheme = localStorage.getItem('tintomax-theme');
-    const body = document.body;
-    const icon = document.getElementById('themeIcon');
-
-    if (savedTheme === 'dark') {
-        body.classList.add('dark-mode');
-        if (icon) icon.className = 'fas fa-sun';
-    }
-
-    const themeToggleBtn = document.getElementById('themeToggle');
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', function() {
-            const isDark = body.classList.toggle('dark-mode');
-            if (isDark) {
-                icon.className = 'fas fa-sun';
-                localStorage.setItem('tintomax-theme', 'dark');
-            } else {
-                icon.className = 'fas fa-moon';
-                localStorage.setItem('tintomax-theme', 'light');
-            }
-        });
-    }
-
-    document.querySelectorAll('input').forEach(input => {
-        input.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') buscarTix();
-        });
-    });
-});
