@@ -54,19 +54,18 @@ async function buscarTix() {
                 const idFormula = item.IDFORMULA || 'SEM_FORMULA';
                 const chave = idFormula;
 
-                const qtd = (item.QTDE !== null && item.QTDE !== undefined) ? item.QTDE : '-';
-                const idCorante = (item.IDCORANTE !== null && item.IDCORANTE !== undefined) ? item.IDCORANTE : '-';
-                const nomeCoranteRaw = item.NOME_CORANTE || '';
+                // CORREÇÃO: Lendo as novas colunas exatas enviadas pelo n8n
+                const unidadeTinta = (item.UNIDADE_TINTA !== null && item.UNIDADE_TINTA !== undefined) ? item.UNIDADE_TINTA : '-';
+                const vlrML = (item.VLRML !== null && item.VLRML !== undefined) ? item.VLRML : '-';
+                
+                const idCorante = item.IDCORANTE !== null && item.IDCORANTE !== undefined ? item.IDCORANTE : '-';
+                const nomeCorante = item.NOME_CORANTE || '';
                 const nomeCor = item.NOMECOR || item.NOME_COR || item.COR || '-';
                 const produto = item.PRODUTO || '-';
                 const base = item.BASE || '-';
                 const embalagem = item.EMBTINTA || item.EMBALAGEM || '-';
 
-                // Se o nome do corante está vazio, é a quantidade unitária (tinta base). Se tem corante, é em ML.
-                const ehUnitario = !nomeCoranteRaw || nomeCoranteRaw.trim() === '' || nomeCoranteRaw === '-';
-                const nomeCorante = ehUnitario ? '-' : nomeCoranteRaw;
-
-                const chaveUnica = `${item.ESTAB}-${item.IDNOTA}-${item.IDITEM}-${chave}-${idCorante}-${qtd}`;
+                const chaveUnica = `${item.ESTAB}-${item.IDNOTA}-${item.IDITEM}-${chave}-${idCorante}`;
 
                 if (!grupos.has(chave)) {
                     grupos.set(chave, {
@@ -87,8 +86,8 @@ async function buscarTix() {
                         estab: item.ESTAB || '-',
                         idNota: item.IDNOTA || '-',
                         nomeCorante: nomeCorante,
-                        qtd: qtd,
-                        ehUnitario: ehUnitario
+                        unidadeTinta: unidadeTinta,
+                        vlrML: vlrML
                     });
                 }
             });
@@ -102,7 +101,7 @@ async function buscarTix() {
 
             let groupIndex = 0;
             grupos.forEach((grupo) => {
-                // Separador entre grupos (não mostrar antes do primeiro)
+                // Separador entre grupos
                 if (groupIndex > 0) {
                     html += `
                         <div class="tinta-separator">
@@ -148,29 +147,36 @@ async function buscarTix() {
                                         <th>Estab</th>
                                         <th>ID Nota</th>
                                         <th>Nome Corante</th>
-                                        <th>Quantidade</th>
+                                        <th>Unidade de Tinta</th>
+                                        <th>Quantidade (ML)</th>
                                     </tr>
                                 </thead>
                                 <tbody>`;
 
                 grupo.registros.forEach(reg => {
-                    // Badge diferente para unitário vs ML
-                    const qtdBadge = reg.ehUnitario 
-                        ? `<span class="qty-badge qty-unitaria">${reg.qtd} un</span>` 
-                        : `<span class="qty-badge qty-ml">${reg.qtd} ML</span>`;
+                    // Badge para unidade de tinta 
+                    const unidadeBadge = reg.vlrML !== '-' 
+                        ? `<span class="qty-badge qty-unidade">${reg.vlrML} un</span>` 
+                        : '<span style="color: #A0AEC0;">-</span>';
 
-                    // Se for unitário, nome do corante mostra "Tinta Base"
-                    const coranteDisplay = reg.ehUnitario 
-                        ? '<em style="color: #A0AEC0; font-size: 0.8rem;">(Tinta Base)</em>' 
-                        : reg.nomeCorante;
+                    // Badge para ML 
+                    const mlBadge = reg.unidadeTinta !== '-' 
+                        ? `<span class="qty-badge qty-ml">${reg.unidadeTinta} ML</span>` 
+                        : '<span style="color: #A0AEC0;">-</span>';
+
+                    // Formatação do Nome do corante
+                    const coranteDisplay = reg.nomeCorante && reg.nomeCorante.trim() !== '' 
+                        ? (reg.nomeCorante === '(Tinta Base)' ? `<strong>${reg.nomeCorante}</strong>` : reg.nomeCorante)
+                        : '<em style="color: #A0AEC0; font-size: 0.8rem;">-</em>';
 
                     html += `
-                        <tr class="${reg.ehUnitario ? 'row-unitaria' : ''}">
+                        <tr>
                             <td class="tix-cell">TIX.${grupo.idFormula}</td>
                             <td>${reg.estab}</td>
                             <td>${reg.idNota}</td>
                             <td>${coranteDisplay}</td>
-                            <td>${qtdBadge}</td>
+                            <td>${unidadeBadge}</td>
+                            <td>${mlBadge}</td>
                         </tr>`;
                 });
 
@@ -202,7 +208,7 @@ async function buscarTix() {
 }
 
 // ===== DARK MODE =====
-function initTheme() {
+document.addEventListener('DOMContentLoaded', function() {
     const savedTheme = localStorage.getItem('tintomax-theme');
     const body = document.body;
     const icon = document.getElementById('themeIcon');
@@ -210,35 +216,25 @@ function initTheme() {
     if (savedTheme === 'dark') {
         body.classList.add('dark-mode');
         if (icon) icon.className = 'fas fa-sun';
-    } else {
-        body.classList.remove('dark-mode');
-        if (icon) icon.className = 'fas fa-moon';
     }
-}
 
-function toggleTheme() {
-    const body = document.body;
-    const icon = document.getElementById('themeIcon');
-    const isDark = body.classList.toggle('dark-mode');
-
-    if (isDark) {
-        icon.className = 'fas fa-sun';
-        localStorage.setItem('tintomax-theme', 'dark');
-    } else {
-        icon.className = 'fas fa-moon';
-        localStorage.setItem('tintomax-theme', 'light');
+    const themeToggleBtn = document.getElementById('themeToggle');
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', function() {
+            const isDark = body.classList.toggle('dark-mode');
+            if (isDark) {
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('tintomax-theme', 'dark');
+            } else {
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('tintomax-theme', 'light');
+            }
+        });
     }
-}
 
-// Inicializar tema ao carregar
-document.addEventListener('DOMContentLoaded', initTheme);
-
-// Evento de clique no botão de tema
-document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-
-// Permitir busca com Enter
-document.querySelectorAll('input').forEach(input => {
-    input.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') buscarTix();
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') buscarTix();
+        });
     });
 });

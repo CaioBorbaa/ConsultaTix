@@ -144,18 +144,10 @@
     border-color: #334155;
 }
 
-.dark-mode .qty-unitaria {
+.dark-mode .qty-unidade {
     background: #0F2E2E;
     color: #5EEAD4;
     border-color: #145353;
-}
-
-.dark-mode .row-unitaria {
-    background-color: #0A1F1F;
-}
-
-.dark-mode .row-unitaria:hover {
-    background-color: #0F2E2E;
 }
 
 .dark-mode td {
@@ -537,7 +529,7 @@ body {
     transition: all 0.3s ease;
 }
 
-/* ===== TINTA GROUP (separação entre tintas) ===== */
+/* ===== TINTA GROUP ===== */
 .tinta-group {
     margin-bottom: 28px;
     background: var(--card-bg);
@@ -716,7 +708,7 @@ tbody tr:last-child td {
     display: inline-block;
 }
 
-.qty-unitaria {
+.qty-unidade {
     background: #E6FFFA;
     color: #2C7A7B;
     border: 1px solid #B2F5EA;
@@ -726,14 +718,6 @@ tbody tr:last-child td {
     background: var(--azul-light);
     color: var(--azul);
     border: 1px solid #C3D4F7;
-}
-
-.row-unitaria {
-    background-color: #FAFFFE;
-}
-
-.row-unitaria:hover {
-    background-color: #F0FFF4;
 }
 
 .embalagem-badge {
