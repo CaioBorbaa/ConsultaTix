@@ -4,7 +4,6 @@ async function buscarTix() {
     const divResultado = document.getElementById('resultado');
     const loading = document.getElementById('loading');
 
-    // Validação agora exige apenas Estabelecimento ou ID da Nota
     if (!estab && !id_nota) {
         divResultado.innerHTML = `
             <div class="empty-state">
@@ -46,7 +45,6 @@ async function buscarTix() {
 
         if (Array.isArray(dados) && dados.length > 0 && dados[0].ESTAB !== undefined) {
 
-            // ===== AGRUPAR POR TINTA (IDFORMULA) =====
             const grupos = new Map();
 
             dados.forEach(item => {
@@ -62,12 +60,16 @@ async function buscarTix() {
                 const produto = item.PRODUTO || '-';
                 const base = item.BASE || '-';
                 const embalagem = item.EMBTINTA || item.EMBALAGEM || '-';
+                
+                // NOVO: Lê a coluna CODCATALOGO do banco. Se for nula, usa o fallback TIX.ID
+                const codCatalogo = (item.CODCATALOGO && item.CODCATALOGO.trim() !== '') ? item.CODCATALOGO : `TIX.${idFormula}`;
 
                 const chaveUnica = `${item.ESTAB}-${item.IDNOTA}-${item.IDITEM}-${chave}-${idCorante}`;
 
                 if (!grupos.has(chave)) {
                     grupos.set(chave, {
                         idFormula: idFormula,
+                        codCatalogo: codCatalogo, // Salva o código correto do banco
                         nomeCor: nomeCor,
                         produto: produto,
                         base: base,
@@ -90,7 +92,6 @@ async function buscarTix() {
                 }
             });
 
-            // ===== RENDERIZAR CADA GRUPO SEPARADAMENTE =====
             let html = `
                 <div class="results-header">
                     <h3><i class="fas fa-layer-group" style="color: var(--laranja);"></i> Resultados Encontrados</h3>
@@ -130,7 +131,8 @@ async function buscarTix() {
                                 </div>
                             </div>
                             <div class="tinta-group-meta">
-                                <span class="tix-badge">TIX.${grupo.idFormula}</span>
+                                <!-- NOVO: Renderiza o código do catálogo na badge superior -->
+                                <span class="tix-badge">${grupo.codCatalogo}</span>
                                 <span class="cor-badge">${baseHtml}</span>
                                 <span class="produto-badge"><i class="fas fa-box" style="margin-right:4px;"></i>${grupo.embalagem}</span>
                             </div>
@@ -150,12 +152,10 @@ async function buscarTix() {
                                 <tbody>`;
 
                 grupo.registros.forEach(reg => {
-                    // Badge para Unidade (Agora puxa vlrML do banco)
                     const unidadeBadge = reg.vlrML !== '-' 
                         ? `<span class="qty-badge qty-unidade">${reg.vlrML} un</span>` 
                         : '<span style="color: #A0AEC0;">-</span>';
 
-                    // Badge para ML (Agora puxa unidadeTinta do banco)
                     const mlBadge = reg.unidadeTinta !== '-' 
                         ? `<span class="qty-badge qty-ml">${reg.unidadeTinta} ML</span>` 
                         : '<span style="color: #A0AEC0;">-</span>';
@@ -166,7 +166,8 @@ async function buscarTix() {
 
                     html += `
                         <tr>
-                            <td class="tix-cell">TIX.${grupo.idFormula}</td>
+                            <!-- NOVO: Renderiza o código do catálogo em cada linha da tabela -->
+                            <td class="tix-cell">${grupo.codCatalogo}</td>
                             <td>${reg.estab}</td>
                             <td>${reg.idNota}</td>
                             <td>${coranteDisplay}</td>
@@ -201,3 +202,35 @@ async function buscarTix() {
         divResultado.classList.add('active');
     }
 }
+
+// ===== DARK MODE =====
+document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('tintomax-theme');
+    const body = document.body;
+    const icon = document.getElementById('themeIcon');
+
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+        if (icon) icon.className = 'fas fa-sun';
+    }
+
+    const themeToggleBtn = document.getElementById('themeToggle');
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', function() {
+            const isDark = body.classList.toggle('dark-mode');
+            if (isDark) {
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('tintomax-theme', 'dark');
+            } else {
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('tintomax-theme', 'light');
+            }
+        });
+    }
+
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') buscarTix();
+        });
+    });
+});
