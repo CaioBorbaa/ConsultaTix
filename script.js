@@ -60,10 +60,8 @@ async function buscarTix() {
                 const produto = item.PRODUTO || '-';
                 const base = item.BASE || '-';
                 const embalagem = item.EMBTINTA || item.EMBALAGEM || '-';
-                
-                // NOVO: Lê a coluna CODCATALOGO do banco. Se for nula, usa o fallback TIX.ID
                 const codCatalogo = (item.CODCATALOGO && item.CODCATALOGO.trim() !== '') ? item.CODCATALOGO : `TIX.${idFormula}`;
-
+                const qtdLatas = item.QTD_LATAS || 1;
                 const chaveUnica = `${item.ESTAB}-${item.IDNOTA}-${item.IDITEM}-${chave}-${idCorante}`;
 
                 if (!grupos.has(chave)) {
@@ -74,6 +72,7 @@ async function buscarTix() {
                         produto: produto,
                         base: base,
                         embalagem: embalagem,
+                        qtdLatas: qtdLatas,
                         registros: []
                     });
                 }
@@ -134,7 +133,7 @@ async function buscarTix() {
                                 <!-- NOVO: Renderiza o código do catálogo na badge superior -->
                                 <span class="tix-badge">${grupo.codCatalogo}</span>
                                 <span class="cor-badge">${baseHtml}</span>
-                                <span class="produto-badge"><i class="fas fa-box" style="margin-right:4px;"></i>${grupo.embalagem}</span>
+                                <span class="produto-badge"><i class="fas fa-box" style="margin-right:4px;"></i>${grupo.qtdLatas}x ${grupo.embalagem}</span>
                             </div>
                         </div>
                         <div class="table-wrapper">
