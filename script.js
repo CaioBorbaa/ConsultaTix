@@ -58,17 +58,80 @@ async function buscarTix() {
                 const nomeCorante = item.NOME_CORANTE || '';
                 const nomeCor = item.NOMECOR || item.NOME_COR || item.COR || '-';
                 const produto = item.PRODUTO || '-';
-                const base = item.BASE || '-';
-                const embalagem = item.EMBTINTA || item.EMBALAGEM || '-';
-                const codCatalogo = (item.CODCATALOGO && item.CODCATALOGO.trim() !== '') ? item.CODCATALOGO : `TIX.${idFormula}`;
+                // === CAÇADOR DE BASE ===
+                let base = item.BASE || '-';
+                const complemento = item.COMPLEMENTO || ''; 
+                
+                // Se a base veio vazia do banco, procura dentro do complemento
+                if ((base === '-' || base === '') && complemento !== '') {
+                    // Procura por "Base:" e captura o que vem depois até a próxima barra "|"
+                    const regexBase = /Base:\s*([^|]+)/i;
+                    const matchBase = complemento.match(regexBase);
+                    
+                    if (matchBase) {
+                        base = matchBase[1].trim(); // Pega exatamente o "BASE C"
+                    }
+                } 
+                
+                // === CAÇADOR DE EMBALAGEM ===
+                let embalagem = item.EMBTINTA || item.EMBALAGEM || '-';
+                
+                if ((embalagem === '-' || embalagem === '') && complemento !== '') {
+                    const regexEmb = /Emb:\s*([^|]+)/i;
+                    const matchEmb = complemento.match(regexEmb);
+                    
+                    if (matchEmb) {
+                        embalagem = matchEmb[1].trim(); 
+                    }
+                }
+
+                // === TRADUTOR DE EMBALAGEM ===
+                // Se a embalagem contiver o texto técnico, troca pelo nome amigável
+                if (embalagem.includes('810 - 0,81')) {
+                    embalagem = 'Litrinho - 0,8';
+                } 
+                // Se quiser adicionar mais traduções no futuro, é só seguir a mesma lógica:
+                // else if (embalagem.includes('outro termo')) { embalagem = 'Nome Amigável'; }
+                
+                // === CAÇADOR DE CÓDIGO TIX ATUALIZADO ===
+                let codCatalogo = '';
+                if (item.CODCATALOGO && item.CODCATALOGO.trim() !== '') {
+                    codCatalogo = item.CODCATALOGO;
+                } else {
+                    const regexTix = /TIX\.[0-9.]+/i;
+                    const matchCor = nomeCor.match(regexTix);
+                    const matchProduto = produto.match(regexTix);
+                    const matchComplemento = complemento.match(regexTix); // NOVO: Procura no complemento
+                    
+                    if (matchCor) {
+                        codCatalogo = matchCor[0].toUpperCase();
+                    } else if (matchComplemento) {
+                        codCatalogo = matchComplemento[0].toUpperCase();
+                    } else if (matchProduto) {
+                        codCatalogo = matchProduto[0].toUpperCase();
+                    } else {
+                        codCatalogo = 'PERSONALIZADA';
+                    }
+                }
+
+                // === MELHORIA DO TÍTULO (NOME DA COR) ===
+                let displayNomeCor = nomeCor !== '-' ? nomeCor : 'Tinta Personalizada';
+                if (displayNomeCor === 'Tinta Personalizada' && complemento !== '') {
+                    // Se o banco mandou a cor vazia, recorta o nome de dentro do complemento!
+                    let partes = complemento.split('|');
+                    if (partes.length > 0) {
+                        displayNomeCor = partes[0].trim();
+                    }
+                }
+
                 const qtdLatas = item.QTD_LATAS || 1;
                 const chaveUnica = `${item.ESTAB}-${item.IDNOTA}-${item.IDITEM}-${chave}-${idCorante}`;
 
                 if (!grupos.has(chave)) {
                     grupos.set(chave, {
                         idFormula: idFormula,
-                        codCatalogo: codCatalogo, // Salva o código correto do banco
-                        nomeCor: nomeCor,
+                        codCatalogo: codCatalogo, 
+                        nomeCor: displayNomeCor, // Usa o nome corrigido
                         produto: produto,
                         base: base,
                         embalagem: embalagem,
@@ -124,12 +187,11 @@ async function buscarTix() {
                                     <i class="fas fa-palette"></i>
                                 </div>
                                 <div>
-                                    <h4>${grupo.nomeCor !== '-' ? grupo.nomeCor : 'Tinta Personalizada'}</h4>
+                                    <h4>${grupo.nomeCor}</h4>
                                     <span class="tinta-subtitle">${grupo.produto !== '-' ? grupo.produto : ''}</span>
                                 </div>
                             </div>
                             <div class="tinta-group-meta">
-                                <!-- NOVO: Renderiza o código do catálogo na badge superior -->
                                 <span class="tix-badge">${grupo.codCatalogo}</span>
                                 <span class="cor-badge">${baseHtml}</span>
                                 <span class="produto-badge"><i class="fas fa-box" style="margin-right:4px;"></i>${grupo.qtdLatas}x ${grupo.embalagem}</span>
@@ -150,24 +212,20 @@ async function buscarTix() {
                                 <tbody>`;
 
                 grupo.registros.forEach(reg => {
-                    // 1. Badge para Unidade (Mantém igual)
                     const unidadeBadge = reg.vlrML !== '-' 
                         ? `<span class="qty-badge qty-unidade">${reg.vlrML} un</span>` 
                         : '<span style="color: #A0AEC0;">-</span>';
 
-                    // 2. Badge para ML (ATUALIZADA para esconder o ML da Base)
                     const mlBadge = (reg.nomeCorante !== '(Tinta Base)' && reg.unidadeTinta !== '-') 
                         ? `<span class="qty-badge qty-ml">${reg.unidadeTinta} ML</span>` 
                         : '<span style="color: #A0AEC0;">-</span>';
 
-                    // 3. Nome do Corante (NÃO REMOVA, mantenha essa do jeito que estava!)
                     const coranteDisplay = reg.nomeCorante && reg.nomeCorante.trim() !== '' 
                         ? (reg.nomeCorante === '(Tinta Base)' ? `<strong>${reg.nomeCorante}</strong>` : reg.nomeCorante)
                         : '<em style="color: #A0AEC0; font-size: 0.8rem;">-</em>';
 
                     html += `
                         <tr>
-                            <!-- NOVO: Renderiza o código do catálogo em cada linha da tabela -->
                             <td class="tix-cell">${grupo.codCatalogo}</td>
                             <td>${reg.estab}</td>
                             <td>${reg.idNota}</td>
