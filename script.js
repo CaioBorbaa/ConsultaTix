@@ -94,7 +94,6 @@ async function buscarTix() {
             let html = `
                 <div class="results-header">
                     <h3><i class="fas fa-layer-group" style="color: var(--laranja);"></i> Resultados Encontrados</h3>
-                    <span class="results-count">${dados.length} registro(s) em ${grupos.size} tinta(s)</span>
                 </div>`;
 
             let groupIndex = 0;
@@ -151,14 +150,17 @@ async function buscarTix() {
                                 <tbody>`;
 
                 grupo.registros.forEach(reg => {
+                    // 1. Badge para Unidade (Mantém igual)
                     const unidadeBadge = reg.vlrML !== '-' 
                         ? `<span class="qty-badge qty-unidade">${reg.vlrML} un</span>` 
                         : '<span style="color: #A0AEC0;">-</span>';
 
-                    const mlBadge = reg.unidadeTinta !== '-' 
+                    // 2. Badge para ML (ATUALIZADA para esconder o ML da Base)
+                    const mlBadge = (reg.nomeCorante !== '(Tinta Base)' && reg.unidadeTinta !== '-') 
                         ? `<span class="qty-badge qty-ml">${reg.unidadeTinta} ML</span>` 
                         : '<span style="color: #A0AEC0;">-</span>';
 
+                    // 3. Nome do Corante (NÃO REMOVA, mantenha essa do jeito que estava!)
                     const coranteDisplay = reg.nomeCorante && reg.nomeCorante.trim() !== '' 
                         ? (reg.nomeCorante === '(Tinta Base)' ? `<strong>${reg.nomeCorante}</strong>` : reg.nomeCorante)
                         : '<em style="color: #A0AEC0; font-size: 0.8rem;">-</em>';
