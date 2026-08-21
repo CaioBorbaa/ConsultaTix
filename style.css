@@ -886,3 +886,20 @@ tbody tr:last-child td {
 .tinta-group {
     animation: fadeInUp 0.4s ease forwards;
 }
+
+/* 1. Trava ABSOLUTA para a cor branca no header inteiro no Dark Mode */
+body.dark-mode .header,
+body.dark-mode .header .header-brand,
+body.dark-mode .header .header-title {
+    color: #FFFFFF !important;
+}
+
+/* 2. Garante que a linha divisória mude apenas a cor da borda, sem quebrar o layout */
+body.dark-mode .search-card-header {
+    border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Linha de segurança caso a borda seja, na verdade, da grid de formulários */
+body.dark-mode .form-grid {
+    border-top-color: rgba(255, 255, 255, 0.15) !important;
+}
