@@ -903,3 +903,72 @@ body.dark-mode .search-card-header {
 body.dark-mode .form-grid {
     border-top-color: rgba(255, 255, 255, 0.15) !important;
 }
+
+/* ===== DIAGNÓSTICO / CONFERÊNCIA / AVISOS ===== */
+
+/* Caixa de debug (?debug=1) - JSON cru do webhook */
+.debug-box {
+    background: #0F172A;
+    color: #E2E8F0;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+}
+
+.debug-box summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--laranja);
+    font-size: 0.85rem;
+}
+
+.debug-box summary i {
+    margin-right: 6px;
+}
+
+.debug-box pre {
+    margin-top: 12px;
+    max-height: 380px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #CBD5E1;
+}
+
+/* Aviso de busca (entrada higienizada / busca ampla) */
+.aviso-box {
+    background: var(--azul-light);
+    color: var(--azul-dark);
+    border-left: 4px solid var(--azul);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.aviso-box i {
+    margin-right: 6px;
+}
+
+/* Badge de base neutro (ex.: "Sem base") - variantes A/B/C já têm cor própria */
+.base-badge {
+    background: #EDF2F7;
+    color: #4A5568;
+}
+
+/* Dark mode dos novos elementos */
+.dark-mode .aviso-box {
+    background: #0F172A;
+    color: #93C5FD;
+    border-left-color: #3B82F6;
+}
+
+.dark-mode .base-badge {
+    background: #0F172A;
+    color: #CBD5E1;
+}
