@@ -295,7 +295,7 @@ async function buscarTix() {
                             <div class="tinta-group-meta">
                                 <span class="tix-badge">${escapeHtml(grupo.codCatalogo)}</span>
                                 <span class="cor-badge">${baseHtml}</span>
-                                <span class="produto-badge"><i class="fas fa-box" style="margin-right:4px;"></i>${escapeHtml(String(grupo.qtdLatas))}x ${escapeHtml(grupo.embalagem)}</span>
+                                <span class="produto-badge qtd-info" tabindex="0" role="button" aria-label="O que significa esta quantidade?"><i class="fas fa-box" style="margin-right:4px;"></i>${escapeHtml(String(grupo.qtdLatas))}x ${escapeHtml(grupo.embalagem)}<i class="fas fa-circle-info qtd-icon"></i><span class="qtd-tooltip" role="tooltip"><strong>Quantidade na nota</strong>Indica quantas unidades deste produto constam na nota consultada.<br><br>Os valores de <b>Unidade de Tinta</b> e <b>Quantidade (ML)</b> da tabela <b>não são multiplicados</b> por esse número.</span></span>
                             </div>
                         </div>
                         <div class="table-wrapper">
@@ -388,6 +388,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // ===== TOOLTIP DA QUANTIDADE (clique/toque) =====
+    document.addEventListener('click', function(e) {
+        const alvo = e.target.closest('.qtd-info');
+        document.querySelectorAll('.qtd-info.aberto').forEach(el => {
+            if (el !== alvo) el.classList.remove('aberto');
+        });
+        if (alvo) alvo.classList.toggle('aberto');
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.qtd-info.aberto').forEach(el => el.classList.remove('aberto'));
+        }
+    });
 
     document.querySelectorAll('input').forEach(input => {
         input.addEventListener('keypress', function(e) {

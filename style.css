@@ -626,6 +626,121 @@ body {
     transition: all 0.3s ease;
 }
 
+/* ===== TOOLTIP DA QUANTIDADE ===== */
+.qtd-info {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: help;
+    outline: none;
+    user-select: none;
+}
+
+.qtd-info:hover,
+.qtd-info:focus-visible,
+.qtd-info.aberto {
+    background: var(--azul-light);
+    box-shadow: 0 0 0 2px rgba(0, 61, 165, 0.25);
+}
+
+.qtd-icon {
+    margin-left: 8px;
+    font-size: 0.9rem;
+    color: var(--azul);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.qtd-info:hover .qtd-icon,
+.qtd-info:focus-visible .qtd-icon,
+.qtd-info.aberto .qtd-icon {
+    color: var(--laranja);
+    transform: scale(1.15);
+}
+
+.qtd-tooltip {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 280px;
+    max-width: 80vw;
+    background: var(--azul-dark);
+    color: #FFFFFF;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 1.45;
+    text-align: left;
+    white-space: normal;
+    box-shadow: var(--sombra-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.qtd-tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 16px;
+    border: 7px solid transparent;
+    border-bottom-color: var(--azul-dark);
+}
+
+.qtd-tooltip strong {
+    display: block;
+    color: #FF8C42;
+    margin-bottom: 4px;
+    font-size: 0.82rem;
+}
+
+.qtd-tooltip b {
+    color: #FFFFFF;
+}
+
+.qtd-info:hover .qtd-tooltip,
+.qtd-info:focus-visible .qtd-tooltip,
+.qtd-info.aberto .qtd-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dark-mode .qtd-icon {
+    color: #93B4F5;
+}
+
+.dark-mode .qtd-info:hover,
+.dark-mode .qtd-info:focus-visible,
+.dark-mode .qtd-info.aberto {
+    background: #1E3A6E;
+    box-shadow: 0 0 0 2px rgba(147, 180, 245, 0.3);
+}
+
+.dark-mode .qtd-tooltip {
+    background: #0F172A;
+    border: 1px solid #334155;
+}
+
+.dark-mode .qtd-tooltip::before {
+    border-bottom-color: #334155;
+}
+
+@media (max-width: 768px) {
+    .qtd-tooltip {
+        right: auto;
+        left: 0;
+    }
+
+    .qtd-tooltip::before {
+        right: auto;
+        left: 16px;
+    }
+}
+
 .base-badge {
     padding: 4px 10px;
     border-radius: 6px;
